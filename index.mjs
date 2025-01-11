@@ -12,8 +12,8 @@ import xml2js from 'xml2js';
 import { decode } from 'html-entities';
 
 // ================== Configuration Constants ================== //
-const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1283861457007673506/w4zSpCb8m-hO5tf5IP4tcq-QiNgHmLz4mTUztPusDlZOhC0ULRhC64SMMZF2ZFTmM6eT';
-const DISCORD_WEBHOOK_URL_2 = 'https://discord.com/api/webhooks/1289677050554224661/F8BUQn0hQvsNFlfeJvfXCNcBfWpINo_wcvaWi-uyKLOIYXKkA-F8Rj716bqOBScUetwy';
+const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1327597517982011413/JEf-qgZpKhBGq3mkD2xCDZ7rEQXvsFA77EN5BGHWUi7HMDlpNDfEBu3tYHkedtGRlTvC';
+const DISCORD_WEBHOOK_URL_2 = 'https://discord.com/api/webhooks/1327597769397112902/7D0rB_fpgjh3AJJfybwEFud_kOhbNtwGjc8MjtIvXdxE9sUsnRIwiv2JJayBF07x0hur';
 const PORT = 21560;
 const REDDIT_RSS_URL_1 = 'https://www.reddit.com/r/all/new/.rss';
 const REDDIT_RSS_URL_2 = 'https://www.reddit.com/r/discordapp/new/.rss';
