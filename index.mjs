@@ -12,8 +12,10 @@ import xml2js from 'xml2js';
 import { decode } from 'html-entities';
 
 // ================== Configuration Constants ================== //
-const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1327597517982011413/JEf-qgZpKhBGq3mkD2xCDZ7rEQXvsFA77EN5BGHWUi7HMDlpNDfEBu3tYHkedtGRlTvC';
-const DISCORD_WEBHOOK_URL_2 = 'https://discord.com/api/webhooks/1327597769397112902/7D0rB_fpgjh3AJJfybwEFud_kOhbNtwGjc8MjtIvXdxE9sUsnRIwiv2JJayBF07x0hur';
+const DISCORD_WEBHOOK_URL =
+  'https://discord.com/api/webhooks/1327597517982011413/JEf-qgZpKhBGq3mkD2xCDZ7rEQXvsFA77EN5BGHWUi7HMDlpNDfEBu3tYHkedtGRlTvC';
+const DISCORD_WEBHOOK_URL_2 =
+  'https://discord.com/api/webhooks/1327597769397112902/7D0rB_fpgjh3AJJfybwEFud_kOhbNtwGjc8MjtIvXdxE9sUsnRIwiv2JJayBF07x0hur';
 const PORT = 21560;
 const REDDIT_RSS_URL_1 = 'https://www.reddit.com/r/all/new/.rss';
 const REDDIT_RSS_URL_2 = 'https://www.reddit.com/r/discordapp/new/.rss';
@@ -68,7 +70,13 @@ async function getRandomCatImage() {
     const width = response.data[0].width;
     const height = response.data[0].height;
 
-    logger.debug('Random cat image fetched.', { imageUrl, imageId, width, height, source: 'getRandomCatImage' });
+    logger.debug('Random cat image fetched.', {
+      imageUrl,
+      imageId,
+      width,
+      height,
+      source: 'getRandomCatImage',
+    });
 
     return {
       url: imageUrl,
@@ -93,8 +101,28 @@ async function getRandomCatImage() {
 
 // Generate a random bot name
 function generateRandomBotName() {
-  const adjectives = ['Purring', 'Sneaky', 'Clawy', 'Fluffy', 'Whiskery', 'Playful', 'Curious', 'Cuddly', 'Mischievous'];
-  const nouns = ['Furball', 'Whiskers', 'Meowster', 'Purrfect', 'Clawson', 'Kittypaw', 'Feline', 'Tailchaser', 'Napster'];
+  const adjectives = [
+    'Purring',
+    'Sneaky',
+    'Clawy',
+    'Fluffy',
+    'Whiskery',
+    'Playful',
+    'Curious',
+    'Cuddly',
+    'Mischievous',
+  ];
+  const nouns = [
+    'Furball',
+    'Whiskers',
+    'Meowster',
+    'Purrfect',
+    'Clawson',
+    'Kittypaw',
+    'Feline',
+    'Tailchaser',
+    'Napster',
+  ];
   const number = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
   const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
   const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
@@ -106,7 +134,10 @@ function generateRandomBotName() {
 // Generate a random profile picture URL based on username
 function getRandomProfilePicture(username) {
   const profilePictureUrl = `https://robohash.org/${encodeURIComponent(username)}.png`;
-  logger.debug('Generated random profile picture URL.', { profilePictureUrl, source: 'getRandomProfilePicture' });
+  logger.debug('Generated random profile picture URL.', {
+    profilePictureUrl,
+    source: 'getRandomProfilePicture',
+  });
   return profilePictureUrl;
 }
 
@@ -194,6 +225,26 @@ app.get('/', async (req, res) => {
       </script>
     `;
 
+    // -----------------------
+    // Interactive Toggle Script
+    // -----------------------
+    const toggleScript = `
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const toggleButton = document.getElementById('toggle-updates-btn');
+          const updatesBox = document.getElementById('updates-box');
+
+          toggleButton.addEventListener('click', () => {
+            if (updatesBox.style.display === 'none') {
+              updatesBox.style.display = 'block';
+            } else {
+              updatesBox.style.display = 'none';
+            }
+          });
+        });
+      </script>
+    `;
+
     res.set('Content-Type', 'text/html; charset=utf-8');
     res.send(`
       <!DOCTYPE html>
@@ -225,18 +276,32 @@ app.get('/', async (req, res) => {
               .box p { 
                   line-height: 1.6; 
               }
+              button {
+                  background-color: #ffcc00;
+                  color: #121212;
+                  border: none;
+                  padding: 10px 15px;
+                  border-radius: 5px;
+                  cursor: pointer;
+                  font-weight: bold;
+                  margin-bottom: 15px;
+              }
+              button:hover {
+                  opacity: 0.8;
+              }
           </style>
       </head>
       <body>
           <h1>Welcome to the MonkeyBytes-API Royal Court</h1>
-          <div class="box">
-              <h2>About the API</h2>
-              <p>This API alloweth the honored user to engage with sundry endpoints, granting random images, bot names, and facts spun in the tongue of medieval England, with tidings from the land of Reddit posted to the realm of Discord.</p>
-          </div>
-          <div class="box">
+
+          <!-- Button to Toggle 'Latest Decrees' -->
+          <button id="toggle-updates-btn">Toggle Latest Decrees</button>
+
+          <div id="updates-box" class="box">
               <h2>Latest Decrees</h2>
               ${updatesHtml}
           </div>
+
           <div class="box">
               <h2>Server Metrics (UK Timezone)</h2>
               <p><strong>Thy server hath been up for:</strong> ${hours} hours, ${minutes} minutes, and ${seconds} seconds.</p>
@@ -244,7 +309,11 @@ app.get('/', async (req, res) => {
               <p><strong>The hour doth strike:</strong> <span id="server-time">${serverTime}</span> in the fair lands of the United Kingdom.</p>
           </div>
 
+          <!-- Existing scripts -->
           ${timeUpdateScript}
+          
+          <!-- New interactive toggle script -->
+          ${toggleScript}
       </body>
       </html>
     `);
@@ -392,7 +461,8 @@ async function postToDiscord(webhookUrl, rssData) {
   // Post each of the newest posts as an embed
   for (const post of newestPosts) {
     try {
-      const postTitle = typeof post.title === 'string' ? decode(post.title) : decode(post.title._ || '');
+      const postTitle =
+        typeof post.title === 'string' ? decode(post.title) : decode(post.title._ || '');
       const postContentRaw = post.content
         ? typeof post.content === 'string'
           ? post.content
@@ -408,7 +478,9 @@ async function postToDiscord(webhookUrl, rssData) {
             : post.author.name._ || ''
           : 'Unknown';
       const postImage =
-        post['media:thumbnail'] && post['media:thumbnail'].$ && post['media:thumbnail'].$.url
+        post['media:thumbnail'] &&
+        post['media:thumbnail'].$ &&
+        post['media:thumbnail'].$.url
           ? post['media:thumbnail'].$.url
           : null;
 
