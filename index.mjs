@@ -77,7 +77,11 @@ async function getRandomCatImage() {
       height: height,
     };
   } catch (error) {
-    logger.error('Error fetching random cat image.', { error: error.message, source: 'getRandomCatImage' });
+    logger.error('Error fetching random cat image.', {
+      errorMessage: error.message,
+      errorStack: error.stack,
+      source: 'getRandomCatImage',
+    });
     return {
       url: 'https://i.ibb.co/wgfvKYb/2.jpg', // Fallback image
       id: 'unknown',
@@ -113,7 +117,11 @@ async function getUpdates() {
     logger.info('Updates file successfully read.', { source: 'getUpdates' });
     return JSON.parse(data);
   } catch (error) {
-    logger.error('Error reading updates.json.', { error: error.message, source: 'getUpdates' });
+    logger.error('Error reading updates.json.', {
+      errorMessage: error.message,
+      errorStack: error.stack,
+      source: 'getUpdates',
+    });
     return [];
   }
 }
@@ -140,7 +148,11 @@ app.get('/', async (req, res) => {
           .join('')
       : `<div class="box">
           <h3>${updates.updateText || 'No Updates'}</h3>
-          <p>${updates.description ? updates.description.replace(/\n/g, '<br>') : 'No description available'}</p>
+          <p>${
+            updates.description
+              ? updates.description.replace(/\n/g, '<br>')
+              : 'No description available'
+          }</p>
         </div>`;
 
     // Get server metrics
@@ -182,43 +194,6 @@ app.get('/', async (req, res) => {
       </script>
     `;
 
-    // ================== ADDED SECTION FOR INTERACTIVITY ================== //
-    // We'll add a button and an empty container for displaying the cat image.
-    // The script inside the same response will handle the "fetch" call.
-    const interactiveCatFetcher = `
-      <div class="box">
-          <h2>Interactive Cat Fetcher</h2>
-          <p>Click the button below to fetch a random cat image!</p>
-          <button id="fetchCatImage">Fetch a Random Cat</button>
-          <div id="catImageContainer"></div>
-      </div>
-      <script>
-        const btn = document.getElementById('fetchCatImage');
-        const container = document.getElementById('catImageContainer');
-        btn.addEventListener('click', async () => {
-          try {
-            // Call our new route: /random-cat-images
-            const res = await fetch('/random-cat-images');
-            if (!res.ok) {
-              throw new Error('Failed to fetch a cat image');
-            }
-            const data = await res.json(); // { images: [...] }
-            if (data.images && data.images.length) {
-              // Display the first cat image
-              container.innerHTML = '<img src="' + data.images[0] + '" style="max-width:300px;" />';
-            } else {
-              container.innerHTML = 'No image returned.';
-            }
-          } catch (err) {
-            container.innerHTML = 'Error: ' + err.message;
-          }
-        });
-      </script>
-      <!-- End of interactive cat fetcher section -->
-    `;
-    // ================== END ADDED SECTION ================== //
-
-    // Combine everything into one response
     res.set('Content-Type', 'text/html; charset=utf-8');
     res.send(`
       <!DOCTYPE html>
@@ -269,13 +244,16 @@ app.get('/', async (req, res) => {
               <p><strong>The hour doth strike:</strong> <span id="server-time">${serverTime}</span> in the fair lands of the United Kingdom.</p>
           </div>
 
-          ${interactiveCatFetcher}
-
           ${timeUpdateScript}
       </body>
       </html>
     `);
   } catch (error) {
+    logger.error('Error rendering the root endpoint.', {
+      errorMessage: error.message,
+      errorStack: error.stack,
+      source: '/',
+    });
     res.status(500).send(`
       <!DOCTYPE html>
       <html lang="en">
@@ -346,23 +324,14 @@ app.get('/testing', async (req, res) => {
 
     res.json(responseData);
   } catch (error) {
-    logger.error('An error hath occurred within the /testing route.', { error: error.message, source: '/testing' });
+    logger.error('An error hath occurred within the /testing route.', {
+      errorMessage: error.message,
+      errorStack: error.stack,
+      source: '/testing',
+    });
     res.status(500).json({
       error: 'Alas! An error hath occurred while fetching data. Please try again later.',
     });
-  }
-});
-
-// ================== NEW ROUTE: Random Cat Images ================== //
-app.get('/random-cat-images', async (req, res) => {
-  try {
-    // You can optionally support a query param for multiple images (e.g., ?count=3).
-    // For now, let's keep it simple: fetch just one.
-    const imageData = await getRandomCatImage();
-    res.json({ images: [imageData.url] });
-  } catch (error) {
-    logger.error('Error fetching cat image.', { error: error.message });
-    res.status(500).json({ error: 'An error occurred while fetching the cat image.' });
   }
 });
 
@@ -378,7 +347,12 @@ async function fetchRedditRSS(url) {
     logger.info('Reddit RSS feed fetched and parsed successfully.', { url });
     return jsonData;
   } catch (error) {
-    logger.error('Error fetching Reddit RSS feed.', { error: error.message });
+    logger.error('Error fetching Reddit RSS feed.', {
+      errorMessage: error.message,
+      errorStack: error.stack,
+      url,
+      source: 'fetchRedditRSS',
+    });
     return null;
   }
 }
@@ -407,8 +381,17 @@ async function postToDiscord(webhookUrl, rssData) {
   try {
     await axios.post(webhookUrl, payload);
     logger.info('Proclamation posted to Discord successfully.');
+  } catch (error) {
+    logger.error('Error posting initial proclamation to Discord.', {
+      errorMessage: error.message,
+      errorStack: error.stack,
+      source: 'postToDiscord',
+    });
+  }
 
-    for (const post of newestPosts) {
+  // Post each of the newest posts as an embed
+  for (const post of newestPosts) {
+    try {
       const postTitle = typeof post.title === 'string' ? decode(post.title) : decode(post.title._ || '');
       const postContentRaw = post.content
         ? typeof post.content === 'string'
@@ -435,15 +418,21 @@ async function postToDiscord(webhookUrl, rssData) {
         description: postContent.length > 2048 ? postContent.slice(0, 2045) + '...' : postContent,
         color: 0x1e90ff,
         timestamp: new Date().toISOString(),
-        author: { name: `Posted by ${postAuthor.length > 256 ? postAuthor.slice(0, 253) + '...' : postAuthor}` },
+        author: {
+          name: `Posted by ${postAuthor.length > 256 ? postAuthor.slice(0, 253) + '...' : postAuthor}`,
+        },
         image: postImage ? { url: postImage } : undefined,
       };
 
       await axios.post(webhookUrl, { embeds: [embed] });
       logger.info('Embed posted to Discord successfully.');
+    } catch (error) {
+      logger.error('Error posting an embed to Discord.', {
+        errorMessage: error.message,
+        errorStack: error.stack,
+        source: 'postToDiscord-embed',
+      });
     }
-  } catch (error) {
-    logger.error('Error posting to Discord.', { error: error.message });
   }
 }
 

@@ -1,39 +1,33 @@
 {
   "name": "monkeybytes-api",
   "version": "1.0.0",
-  "description": "A medieval-themed API for fetching random cat images, bot names, Reddit posts, and sending notifications to Discord.",
-  "main": "server.mjs",
+  "description": "An Express.js API that fetches Reddit RSS feeds, posts updates to Discord webhooks, and provides random cat images and facts.",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node server.mjs",
-    "test": "echo \"No test specified\" && exit 1"
+    "start": "node index.js"
   },
-  "engines": {
-    "node": ">=21.0.0"
-  },
-  "author": "XpalidinX",
+  "keywords": [
+    "express",
+    "discord",
+    "reddit",
+    "rss",
+    "cats"
+  ],
+  "author": "Your Name",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/XpalidinX/monkeybytes-api.git"
+  "engines": {
+    "node": ">=14"
   },
-  "bugs": {
-    "url": "https://github.com/XpalidinX/monkeybytes-api/issues"
-  },
-  "homepage": "https://github.com/XpalidinX/monkeybytes-api#readme",
   "dependencies": {
-    "axios": "^1.7.9",
-    "cookie-parser": "^1.4.7",
+    "axios": "^1.5.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "crypto": "^1.0.1",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "helmet": "^8.0.0",
+    "express": "^4.18.2",
+    "helmet": "^6.1.6",
     "html-entities": "^2.3.3",
     "morgan": "^1.10.0",
-    "node-fetch": "^3.3.2",
-    "pem": "^1.14.8",
-    "winston": "^3.17.0",
-    "xml2js": "^0.5.0"
+    "winston": "^3.9.0",
+    "xml2js": "^0.4.23"
   }
 }
