@@ -292,7 +292,10 @@ app.get('/', async (req, res) => {
           </style>
       </head>
       <body>
-          <h1>Welcome to the MonkeyBytes-API Royal Court</h1>
+          <div class="box">
+              <h1>Welcome to the MonkeyBytes-API Royal Court</h1>
+              <p>Hail, noble visitor! We bid thee welcome to the MonkeyBytes API, a realm of cunning amusements and tidings!</p>
+          </div>
 
           <!-- Button to Toggle 'Latest Decrees' -->
           <button id="toggle-updates-btn">Toggle Latest Decrees</button>
@@ -491,7 +494,9 @@ async function postToDiscord(webhookUrl, rssData) {
         color: 0x1e90ff,
         timestamp: new Date().toISOString(),
         author: {
-          name: `Posted by ${postAuthor.length > 256 ? postAuthor.slice(0, 253) + '...' : postAuthor}`,
+          name: `Posted by ${
+            postAuthor.length > 256 ? postAuthor.slice(0, 253) + '...' : postAuthor
+          }`,
         },
         image: postImage ? { url: postImage } : undefined,
       };
