@@ -13,6 +13,10 @@
 - **Improved Discord Webhook Integration for Reddit Feeds**:
   - Enhanced the functionality for fetching top 5 posts from Reddit RSS feeds (`/r/all` and `/r/discordapp`) and posting them to different Discord channels using webhooks. Each post is formatted correctly with titles, content, and images (if available).
 
+- **Eighth Edict - Noble Welcome Update**:
+  - The root (`/`) endpoint now includes a grand, medieval-themed welcome message, greeting users in the noble tongue of 1066 England.
+  - Interactive toggle for "Latest Decrees" allows users to show or hide the updates dynamically, enhancing usability and engagement.
+
 ### Changed
 - **Root Endpoint Improvements**:
   - The root (`/`) endpoint now serves detailed information, including:
@@ -39,4 +43,3 @@
   
 - **Code Structure Explanation**:
   - Updated the inline documentation within the code to clearly explain all new functionality, particularly around Discord webhooks, Reddit RSS feeds, and CatFact Ninja integration.
-
