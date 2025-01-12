@@ -182,6 +182,43 @@ app.get('/', async (req, res) => {
       </script>
     `;
 
+    // ================== ADDED SECTION FOR INTERACTIVITY ================== //
+    // We'll add a button and an empty container for displaying the cat image.
+    // The script inside the same response will handle the "fetch" call.
+    const interactiveCatFetcher = `
+      <div class="box">
+          <h2>Interactive Cat Fetcher</h2>
+          <p>Click the button below to fetch a random cat image!</p>
+          <button id="fetchCatImage">Fetch a Random Cat</button>
+          <div id="catImageContainer"></div>
+      </div>
+      <script>
+        const btn = document.getElementById('fetchCatImage');
+        const container = document.getElementById('catImageContainer');
+        btn.addEventListener('click', async () => {
+          try {
+            // Call our new route: /random-cat-images
+            const res = await fetch('/random-cat-images');
+            if (!res.ok) {
+              throw new Error('Failed to fetch a cat image');
+            }
+            const data = await res.json(); // { images: [...] }
+            if (data.images && data.images.length) {
+              // Display the first cat image
+              container.innerHTML = '<img src="' + data.images[0] + '" style="max-width:300px;" />';
+            } else {
+              container.innerHTML = 'No image returned.';
+            }
+          } catch (err) {
+            container.innerHTML = 'Error: ' + err.message;
+          }
+        });
+      </script>
+      <!-- End of interactive cat fetcher section -->
+    `;
+    // ================== END ADDED SECTION ================== //
+
+    // Combine everything into one response
     res.set('Content-Type', 'text/html; charset=utf-8');
     res.send(`
       <!DOCTYPE html>
@@ -231,6 +268,8 @@ app.get('/', async (req, res) => {
               <p><strong>The day of our Lord is:</strong> ${serverDate}.</p>
               <p><strong>The hour doth strike:</strong> <span id="server-time">${serverTime}</span> in the fair lands of the United Kingdom.</p>
           </div>
+
+          ${interactiveCatFetcher}
 
           ${timeUpdateScript}
       </body>
@@ -311,6 +350,19 @@ app.get('/testing', async (req, res) => {
     res.status(500).json({
       error: 'Alas! An error hath occurred while fetching data. Please try again later.',
     });
+  }
+});
+
+// ================== NEW ROUTE: Random Cat Images ================== //
+app.get('/random-cat-images', async (req, res) => {
+  try {
+    // You can optionally support a query param for multiple images (e.g., ?count=3).
+    // For now, let's keep it simple: fetch just one.
+    const imageData = await getRandomCatImage();
+    res.json({ images: [imageData.url] });
+  } catch (error) {
+    logger.error('Error fetching cat image.', { error: error.message });
+    res.status(500).json({ error: 'An error occurred while fetching the cat image.' });
   }
 });
 
