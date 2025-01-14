@@ -13,9 +13,9 @@ import { decode } from 'html-entities';
 
 // ================== Configuration Constants ================== //
 const DISCORD_WEBHOOK_URL =
-  '';
+  'REDACTED FOR PRIVACY';
 const DISCORD_WEBHOOK_URL_2 =
-  '';
+  'REDACTED FOR PRIVACY';
 const PORT = 21560;
 const REDDIT_RSS_URL_1 = 'https://www.reddit.com/r/all/new/.rss';
 const REDDIT_RSS_URL_2 = 'https://www.reddit.com/r/discordapp/new/.rss';
