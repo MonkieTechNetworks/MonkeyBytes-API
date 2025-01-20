@@ -1,48 +1,42 @@
-# Security Policy
+# 🛡️ Security Policy
 
-## Supported Versions
+## 🏷️ Supported Versions
 
-Use this section to inform users about which versions of MonkeyBytes-API are currently being supported with security updates.
+The following table shows which versions of **MonkeyBytes-API** currently receive security updates:
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 20.x   | :white_check_mark: |
-| 18.x   | :white_check_mark: |
-| 16.x   | :x:                |
-| <16.x  | :x:                |
+| Version | Supported           |
+| ------- | ------------------- |
+| **20.x**  | :white_check_mark: |
+| **18.x**  | :white_check_mark: |
+| **16.x**  | :x:                |
+| **<16.x** | :x:                |
 
-## Reporting a Vulnerability
+## 🐛 Vulnerability Reporting
 
-We take security vulnerabilities seriously and appreciate your help in keeping MonkeyBytes-API secure. If you discover a security vulnerability, please follow these guidelines to report it responsibly.
+To report a security vulnerability in **MonkeyBytes-API**, please follow these steps:
 
-1. **Use GitHub Security Advisories**
+### 1️⃣ Submit via GitHub Security Advisories
+1. Visit our [Security Advisories](https://github.com/MonkeyBytes/MonkeyBytes-API/security/advisories) page.  
+2. Click **"New Security Advisory"**.  
+3. Include the following details:
+   - **Clear title**  
+   - **Detailed description**  
+   - **Steps to reproduce**  
+   - **Expected behavior**  
+   - **Relevant screenshots/logs**  
 
-   Please report vulnerabilities by creating a security advisory in our GitHub repository. Follow these steps:
+### 2️⃣ Maintain Confidentiality
+Do **not** disclose vulnerabilities publicly until we've addressed them. This helps protect all users from potential exploits.
 
-   - **Navigate to the Security Tab**
+### 3️⃣ Response Process
+- We will **acknowledge receipt within 48 hours**.  
+- Regular updates will be provided on **investigation** and **resolution** progress.  
+- All reports are handled promptly with the utmost care.
 
-     Go to the [Security](https://github.com/yourusername/MonkeyBytes-API/security/advisories) section of the repository.
+### 4️⃣ Protection Policy
+We appreciate good-faith security reports and **do not tolerate any form of retaliation** against security researchers who report issues responsibly.
 
-   - **Click on "New Security Advisory"**
+---
 
-     Press the "New security advisory" button to begin.
-
-   - **Provide a Descriptive Title and Detailed Description**
-
-     - **Title**: Briefly summarize the vulnerability.
-     - **Description**: Provide detailed information, including steps to reproduce the issue, expected behavior, and any relevant screenshots or logs.
-
-2. **Confidentiality**
-
-   Please refrain from disclosing the vulnerability publicly until we have had sufficient time to address it. This helps protect our users and maintain the security of the API.
-
-3. **Acknowledgment and Updates**
-
-   Upon receiving your report, we will acknowledge receipt within 48 hours and keep you informed about the progress of our investigation and resolution. We aim to respond to all vulnerability reports promptly and responsibly.
-
-4. **Non-Retaliation**
-
-   We value your contribution to enhancing the security of MonkeyBytes-API. We do not tolerate any form of retaliation against individuals who report vulnerabilities in good faith.
-
-By following these guidelines, you help us maintain a secure and reliable service for all users of MonkeyBytes-API. Thank you for your cooperation and support.
-
+Thank you for helping keep **MonkeyBytes-API** secure!  
+:lock: **Your vigilance ensures the safety and reliability of our code.**

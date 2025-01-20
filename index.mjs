@@ -12,10 +12,8 @@ import xml2js from 'xml2js';
 import { decode } from 'html-entities';
 
 // ================== Configuration Constants ================== //
-const DISCORD_WEBHOOK_URL =
-  'REDACTED FOR PRIVACY';
-const DISCORD_WEBHOOK_URL_2 =
-  'REDACTED FOR PRIVACY';
+const DISCORD_WEBHOOK_URL = 'REDACTED FOR PRIVACY';
+const DISCORD_WEBHOOK_URL_2 = 'REDACTED FOR PRIVACY';
 const PORT = 21560;
 const REDDIT_RSS_URL_1 = 'https://www.reddit.com/r/all/new/.rss';
 const REDDIT_RSS_URL_2 = 'https://www.reddit.com/r/discordapp/new/.rss';
@@ -160,7 +158,7 @@ async function getUpdates() {
 // ================== Routes ================== //
 
 // Root Endpoint with Server Metrics and Updates
-app.get('/', async (req, res) => {
+app.get('/', async (_req, res) => {
   logger.info('The noble root endpoint hath been accessed.', { endpoint: '/' });
   try {
     const updates = await getUpdates();
@@ -285,6 +283,7 @@ app.get('/', async (req, res) => {
                   cursor: pointer;
                   font-weight: bold;
                   margin-bottom: 15px;
+                  margin-right: 5px;
               }
               button:hover {
                   opacity: 0.8;
@@ -299,6 +298,9 @@ app.get('/', async (req, res) => {
 
           <!-- Button to Toggle 'Latest Decrees' -->
           <button id="toggle-updates-btn">Toggle Latest Decrees</button>
+
+          <!-- NEW Button linking to /testing route -->
+          <button onclick="window.location.href='/testing'">Go to Testing Endpoint</button>
 
           <div id="updates-box" class="box">
               <h2>Latest Decrees</h2>
@@ -367,7 +369,7 @@ app.get('/', async (req, res) => {
 });
 
 // Testing Endpoint
-app.get('/testing', async (req, res) => {
+app.get('/testing', async (_req, res) => {
   logger.info('The testing endpoint hath been accessed.', { endpoint: '/testing' });
 
   try {
@@ -529,11 +531,21 @@ postNewestToDiscord();
 
 // ================== Start the Server ================== //
 app.listen(PORT, '0.0.0.0', () => {
-  logger.info(`The server is running at http://localhost:${PORT}`);
+  logger.info(`The server is running at http://0.0.0.0:${PORT}`);
 });
 
 // ================== 404 Error Handler ================== //
 app.use((req, res) => {
   logger.warn('An unknown endpoint hath been accessed.', { path: req.path, source: '404Handler' });
   res.status(404).json({ error: 'Oh dear! The page thou seekest is not to be found.' });
+});
+
+// ================== Error Handling Middleware ================== //
+app.use((err, req, res, next) => {
+  logger.error('An unexpected error hath occurred.', {
+    errorMessage: err.message,
+    errorStack: err.stack,
+    source: 'ErrorHandler',
+  });
+  res.status(500).json({ error: 'Alas! An unexpected error hath occurred. Please try again later.' });
 });
