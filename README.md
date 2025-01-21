@@ -65,7 +65,7 @@ We welcome all manner of contributions, be they big or small!
 
 ## 📜 License & Acknowledgments
 
-© 2024 **MonkeyBytes-API** by **palidintheonly**. All rights reserved.
+© 2025 **MonkeyBytes-API** by **palidintheonly**. All rights reserved.
 
 May your code compile swiftly, and your logs be ever in your favor!  
 **Huzzah!**
