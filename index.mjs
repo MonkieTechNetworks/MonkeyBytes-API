@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import xml2js from 'xml2js';
 import { decode } from 'html-entities';
+import crypto from 'crypto';
 
 // ================== Configuration Constants ================== //
 const DISCORD_WEBHOOK_URL = 'REDACTED FOR PRIVACY';
@@ -134,9 +135,9 @@ function generateRandomBotName() {
     'Tailchaser',
     'Napster',
   ];
-  const number = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
-  const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-  const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+  const number = String(crypto.randomInt(0, 10000)).padStart(4, '0');
+  const randomAdjective = adjectives[crypto.randomInt(0, adjectives.length)];
+  const randomNoun = nouns[crypto.randomInt(0, nouns.length)];
   const botName = `${randomAdjective}${randomNoun}${number}`;
   logger.debug('Generated random cat bot name.', { botName, source: 'generateRandomBotName' });
   return botName;
