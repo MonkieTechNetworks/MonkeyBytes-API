@@ -1,6 +1,6 @@
 {
   "name": "monkeybytes-api",
-  "version": "1.0.0",
+  "version": "12.2.45-hotfix",
   "description": "An Express.js API that fetches Reddit RSS feeds, posts updates to Discord webhooks, and provides random cat images and facts.",
   "main": "index.js",
   "type": "module",
