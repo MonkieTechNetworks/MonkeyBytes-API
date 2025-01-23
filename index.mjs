@@ -28,8 +28,21 @@ const app = express();
 // Apply security-related headers
 app.use(
   helmet({
-    contentSecurityPolicy: false,
-    crossOriginOpenerPolicy: false,
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "example.com"],
+        styleSrc: ["'self'", "example.com"],
+        imgSrc: ["'self'", "data:"],
+        connectSrc: ["'self'", "api.example.com"],
+        fontSrc: ["'self'", "fonts.example.com"],
+        objectSrc: ["'none'"],
+        frameAncestors: ["'none'"],
+        formAction: ["'self'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+    crossOriginOpenerPolicy: { policy: "same-origin" },
   })
 );
 
